@@ -142,7 +142,7 @@ async function nominatimAutocomplete(query: string): Promise<NominatimResult[]> 
 // ── Photon fallback helpers ───────────────────────────────────────────────────
 async function photonGeocode(query: string): Promise<NominatimResult | null> {
   const res = await axios.get<PhotonResponse>(`${PHOTON_BASE}/api`, {
-    params: { q: query, limit: 1, lang: 'en', bbox: MH_BBOX },
+    params: { q: query, limit: 1, lang: 'en' },
     headers,
   });
   const features = res.data.features;
@@ -162,7 +162,7 @@ async function photonReverse(lat: number, lon: number): Promise<NominatimResult 
 
 async function photonAutocomplete(query: string): Promise<NominatimResult[]> {
   const res = await axios.get<PhotonResponse>(`${PHOTON_BASE}/api`, {
-    params: { q: query, limit: 7, lang: 'en', bbox: MH_BBOX },
+    params: { q: query, limit: 7, lang: 'en', },
     headers,
   });
   return (res.data.features ?? []).map((f, i) => photonFeatureToResult(f, i));
