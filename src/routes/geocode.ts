@@ -113,7 +113,15 @@ router.get('/autocomplete', async (req: Request, res: Response): Promise<void> =
   if (q.length < 2) { res.json([]); return; }
 
   const results = await autocomplete(q);
-  res.json(results);
+  
+  // Filter out results with insufficient detail (e.g., just country or state names)
+  // Keep only results with at least 2 commas (indicating 3+ levels of detail)
+  const filtered = results.filter(r => {
+    const commaCount = (r.display_name.match(/,/g) || []).length;
+    return commaCount >= 2;
+  });
+  
+  res.json(filtered);
 });
 
 /** GET /route — planned delivery route waypoints */
